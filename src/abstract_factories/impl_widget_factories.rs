@@ -5,24 +5,24 @@ use crate::{
 
 pub struct WindowsImplWidgetFactory {}
 
-impl ImplWidgetFactory for WindowsImplWidgetFactory {
-    fn create_button(&self) -> impl Widget {
+impl<'a> ImplWidgetFactory<'a> for WindowsImplWidgetFactory {
+    fn create_button(&self) -> impl Widget + 'a {
         WindowsButton {}
     }
 
-    fn create_text(&self) -> impl Widget {
+    fn create_text(&self) -> impl Widget + 'a {
         WindowsText {}
     }
 }
 
 pub struct LinuxImplWidgetFactory {}
 
-impl ImplWidgetFactory for LinuxImplWidgetFactory {
-    fn create_button(&self) -> impl Widget {
+impl<'a> ImplWidgetFactory<'a> for LinuxImplWidgetFactory {
+    fn create_button(&self) -> impl Widget + 'a {
         LinuxButton {}
     }
 
-    fn create_text(&self) -> impl Widget {
+    fn create_text(&self) -> impl Widget + 'a {
         LinuxText {}
     }
 }

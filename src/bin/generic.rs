@@ -1,19 +1,19 @@
 use abstract_factory::{
     abstract_factories::{
-        impl_widget_factories::{LinuxImplWidgetFactory, WindowsImplWidgetFactory},
-        widget_factory::ImplWidgetFactory,
+        generic_widget_factories::{LinuxGenericWidgetFactory, WindowsGenericWidgetFactory},
+        widget_factory::GenericWidgetFactory,
     },
     widgets::Widget,
 };
 
 fn main() {
-    let windows_factory = WindowsImplWidgetFactory {};
-    let linux_factory = LinuxImplWidgetFactory {};
+    let windows_factory = WindowsGenericWidgetFactory {};
+    let linux_factory = LinuxGenericWidgetFactory {};
 
-    // Can't store them in a common container, not dyn compatible!
+    // Can't store them in a common container, they don't have the same type (due to generic arguments).
     // let factories = [
-    //     &windows_factory as &dyn ImplWidgetFactory,
-    //     &linux_factory as &dyn ImplWidgetFactory,
+    //     &windows_factory as &dyn GenericWidgetFactory<WindowsButton, WindowsText>,
+    //     &linux_factory as &dyn GenericWidgetFactory<LinuxButton, LinuxText>,
     // ];
 
     let mut buttons = vec![];
@@ -50,6 +50,8 @@ fn main() {
 
     // Creation of the app here requires the lifetime specifiers on the return types of the factory.
     let app = App::new(texts);
+
+    app.render();
 }
 
 struct App {
@@ -59,5 +61,11 @@ struct App {
 impl App {
     pub fn new(widgets: Vec<Box<dyn Widget>>) -> Self {
         App { widgets }
+    }
+
+    pub fn render(&self) {
+        for w in &self.widgets {
+            w.render();
+        }
     }
 }
