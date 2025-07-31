@@ -50,6 +50,8 @@ fn main() {
 
     // Creation of the app here requires the lifetime specifiers on the return types of the factory.
     let app = App::new(texts);
+
+    app.render();
 }
 
 struct App {
@@ -59,5 +61,11 @@ struct App {
 impl App {
     pub fn new(widgets: Vec<Box<dyn Widget>>) -> Self {
         App { widgets }
+    }
+
+    pub fn render(&self) {
+        for w in &self.widgets {
+            w.render();
+        }
     }
 }
