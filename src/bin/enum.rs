@@ -1,40 +1,38 @@
 use abstract_factory::{
-    abstract_factories::enum_widget_factories::{AnyWidget, EnumWidgetFactory},
-    persistence::Widget,
+    abstract_factories::enum_factories::{PersistenceFactoryEnum, StorerEnum},
+    apps::enum_app::EnumApp,
 };
 
 fn main() {
-    let windows_factory = EnumWidgetFactory::WindowsWidgetFactory {};
-    let linux_factory = EnumWidgetFactory::LinuxWidgetFactory {};
+    let json_factory = PersistenceFactoryEnum::Json {};
+    let postgres_factory = PersistenceFactoryEnum::Postgres {};
 
-    let mut buttons = vec![];
-    buttons.push(windows_factory.create_button());
-    buttons.push(linux_factory.create_button());
+    let json_app = EnumApp {
+        loader: json_factory.create_loader(),
+        storer: json_factory.create_storer(),
+    };
 
-    let mut texts = vec![];
-    texts.push(windows_factory.create_text());
-    texts.push(linux_factory.create_text());
+    let postgres_app = EnumApp {
+        loader: postgres_factory.create_loader(),
+        storer: postgres_factory.create_storer(),
+    };
 
-    let mut all_widgets: Vec<AnyWidget> = texts.into_iter().map(|t| AnyWidget::Text(t)).collect();
-    all_widgets.append(&mut buttons.into_iter().map(|b| AnyWidget::Button(b)).collect());
+    println!("--- Running json app ---");
+    json_app.store();
+    json_app.load();
+    println!("");
 
-    let app = App::new(all_widgets);
+    println!("--- Running postgres app ---");
+    postgres_app.store();
+    postgres_app.load();
+    println!("");
 
-    app.render();
-}
+    // Can easily store storers in the same collection as they are variants of the same enum.
+    let _storers: Vec<StorerEnum> = vec![
+        json_factory.create_storer(),
+        postgres_factory.create_storer(),
+    ];
 
-pub struct App {
-    widgets: Vec<AnyWidget>,
-}
-
-impl App {
-    pub fn new(widgets: Vec<AnyWidget>) -> Self {
-        App { widgets }
-    }
-
-    pub fn render(&self) {
-        for w in &self.widgets {
-            w.render();
-        }
-    }
+    // Same for the factories
+    let _factories: Vec<PersistenceFactoryEnum> = vec![json_factory, postgres_factory];
 }
