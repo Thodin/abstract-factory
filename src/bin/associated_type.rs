@@ -4,6 +4,7 @@ use abstract_factory::{
         PostgresAssociatedTypePersistenceFactory,
     },
     apps::generic_app::GenericApp,
+    persistence::Storer,
 };
 
 fn main() {
@@ -29,4 +30,23 @@ fn main() {
     postgres_app.store();
     postgres_app.load();
     println!("");
+
+    // Play around a bit.
+
+    // If we want multiple storers in the same collection, we still need to box (obviously!).
+    let _storers: Vec<Box<dyn Storer>> = vec![
+        Box::new(json_factory.create_storer()),
+        Box::new(postgres_factory.create_storer()),
+    ];
+
+    // Can't get both factories into the same collection, as we would need to specify
+    // the associated types in the trait object, but we can't (as they differ).
+    // let factories: Vec<
+    //     Box<
+    //         dyn AssociatedTypePersistenceFactory<
+    //                 CreatedLoader = JsonLoader,
+    //                 CreatedStorer = JsonStorer,
+    //             >,
+    //     >,
+    // > = vec![Box::new(json_factory), Box::new(postgres_factory)];
 }
