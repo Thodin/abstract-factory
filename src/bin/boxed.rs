@@ -28,4 +28,8 @@ fn main() {
     postgres_app.store();
     postgres_app.load();
     println!("");
+
+    // Can even move both factories in a common collection, because they exhibit the same type.
+    let _factories: Vec<Box<dyn BoxedPersistenceFactory>> =
+        vec![Box::new(json_factory), Box::new(postgres_factory)];
 }
