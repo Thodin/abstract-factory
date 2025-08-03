@@ -1,71 +1,32 @@
 use abstract_factory::{
-    abstract_factories::{
-        impl_widget_factories::{LinuxImplWidgetFactory, WindowsImplWidgetFactory},
-        widget_factory::ImplWidgetFactory,
+    abstract_factories::impl_factories::{
+        ImplPersistenceFactory, JsonImplPersistenceFactory, PostgresImplPersistenceFactory,
     },
-    persistence::Widget,
+    apps::generic_app::GenericApp,
 };
 
 fn main() {
-    let windows_factory = WindowsImplWidgetFactory {};
-    let linux_factory = LinuxImplWidgetFactory {};
+    // Same as generic factory, impl is only a bit of syntax sugar here.
+    let json_factory = JsonImplPersistenceFactory {};
+    let postgres_factory = PostgresImplPersistenceFactory {};
 
-    // Can't store them in a common container, not dyn compatible!
-    // let factories = [
-    //     &windows_factory as &dyn ImplWidgetFactory,
-    //     &linux_factory as &dyn ImplWidgetFactory,
-    // ];
+    let json_app = GenericApp {
+        loader: json_factory.create_loader(),
+        storer: json_factory.create_storer(),
+    };
 
-    let mut buttons = vec![];
-    let mut texts = vec![];
+    let postgres_app = GenericApp {
+        loader: postgres_factory.create_loader(),
+        storer: postgres_factory.create_storer(),
+    };
 
-    // Also can't store created buttons in a common collection, as the monomorphized concrete
-    // button types don't need to match.
-    // buttons.push(windows_factory.create_button());
-    // buttons.push(linux_factory.create_button());
+    println!("--- Running json app ---");
+    json_app.store();
+    json_app.load();
+    println!("");
 
-    // So therefore, we're back to trait objects again.
-    // But at least, we can use references for trait objects here, instead of boxes.
-    // However, the use cases for this are rare I assume...
-    let windows_button = windows_factory.create_button();
-    let linux_button = linux_factory.create_button();
-
-    buttons.push(&windows_button as &dyn Widget);
-    buttons.push(&linux_button as &dyn Widget);
-
-    // Do the texts via boxes.
-    texts.push(Box::new(windows_factory.create_text()) as Box<dyn Widget>);
-    texts.push(Box::new(linux_factory.create_text()) as Box<dyn Widget>);
-
-    println!("BUTTONS");
-    for b in &buttons {
-        b.render();
-    }
-    println!();
-
-    println!("TEXTS");
-    for t in &texts {
-        t.render();
-    }
-
-    // Creation of the app here requires the lifetime specifiers on the return types of the factory.
-    let app = App::new(texts);
-
-    app.render();
-}
-
-struct App {
-    widgets: Vec<Box<dyn Widget>>,
-}
-
-impl App {
-    pub fn new(widgets: Vec<Box<dyn Widget>>) -> Self {
-        App { widgets }
-    }
-
-    pub fn render(&self) {
-        for w in &self.widgets {
-            w.render();
-        }
-    }
+    println!("--- Running postgres app ---");
+    postgres_app.store();
+    postgres_app.load();
+    println!("");
 }
