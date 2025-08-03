@@ -1,7 +1,4 @@
-use crate::{
-    abstract_factories::enum_factories::{LoaderEnum, StorerEnum},
-    persistence::{Loader, Storer},
-};
+use crate::abstract_factories::enum_factories::{LoaderEnum, StorerEnum};
 
 pub struct EnumApp {
     pub storer: StorerEnum,
