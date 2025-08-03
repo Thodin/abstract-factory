@@ -1,33 +1,31 @@
-use abstract_factory::abstract_factories::{
-    boxed_widget_factories::{LinuxBoxedWidgetFactory, WindowsBoxedWidgetFactory},
-    widget_factory::BoxedWidgetFactory,
+use abstract_factory::{
+    abstract_factories::boxed_factories::{
+        BoxedPersistenceFactory, JsonBoxedPersistenceFactory, PostgresBoxedPersistenceFactory,
+    },
+    apps::boxed_app::BoxedApp,
 };
 
 fn main() {
-    let windows_factory = WindowsBoxedWidgetFactory {};
-    let linux_factory = LinuxBoxedWidgetFactory {};
+    let json_factory = JsonBoxedPersistenceFactory {};
+    let postgres_factory = PostgresBoxedPersistenceFactory {};
 
-    let factories = [
-        &windows_factory as &dyn BoxedWidgetFactory,
-        &linux_factory as &dyn BoxedWidgetFactory,
-    ];
+    let json_app = BoxedApp {
+        loader: json_factory.create_loader(),
+        storer: json_factory.create_storer(),
+    };
 
-    let mut buttons = vec![];
-    let mut texts = vec![];
+    let postgres_app = BoxedApp {
+        loader: postgres_factory.create_loader(),
+        storer: postgres_factory.create_storer(),
+    };
 
-    for f in factories {
-        buttons.push(f.create_button());
-        texts.push(f.create_text());
-    }
+    println!("--- Running json app ---");
+    json_app.store();
+    json_app.load();
+    println!("");
 
-    println!("BUTTONS");
-    for b in &buttons {
-        b.render();
-    }
-    println!();
-
-    println!("TEXTS");
-    for t in &texts {
-        t.render();
-    }
+    println!("--- Running postgres app ---");
+    postgres_app.store();
+    postgres_app.load();
+    println!("");
 }

@@ -1,6 +1,6 @@
 use crate::{
     abstract_factories::widget_factory::AssociatedTypeWidgetFactory,
-    widgets::{LinuxButton, LinuxText, WindowsButton, WindowsText},
+    persistence::{LinuxButton, LinuxText, WindowsButton, WindowsText},
 };
 
 pub struct WindowsAssociatedTypeWidgetFactory {}

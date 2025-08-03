@@ -3,7 +3,7 @@ use abstract_factory::{
         impl_widget_factories::{LinuxImplWidgetFactory, WindowsImplWidgetFactory},
         widget_factory::ImplWidgetFactory,
     },
-    widgets::Widget,
+    persistence::Widget,
 };
 
 fn main() {

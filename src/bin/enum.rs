@@ -1,6 +1,6 @@
 use abstract_factory::{
     abstract_factories::enum_widget_factories::{AnyWidget, EnumWidgetFactory},
-    widgets::Widget,
+    persistence::Widget,
 };
 
 fn main() {

@@ -1,5 +1,6 @@
 pub mod abstract_factories;
-pub mod widgets;
+pub mod apps;
+pub mod persistence;
 
 pub fn add(left: u64, right: u64) -> u64 {
     left + right

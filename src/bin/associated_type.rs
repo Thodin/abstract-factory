@@ -5,7 +5,7 @@ use abstract_factory::{
         },
         widget_factory::AssociatedTypeWidgetFactory,
     },
-    widgets::Widget,
+    persistence::Widget,
 };
 
 fn main() {

@@ -1,4 +1,4 @@
-use crate::widgets::{LinuxButton, LinuxText, Widget, WindowsButton, WindowsText};
+use crate::persistence::{LinuxButton, LinuxText, Widget, WindowsButton, WindowsText};
 
 // The enum approach has better performance than the boxed approach, and is probably
 // a bit more idiomatic. There's a lot of boiler plate due to the wrapping though,
