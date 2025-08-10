@@ -7,15 +7,8 @@ fn main() {
     let json_factory = PersistenceFactoryEnum::Json {};
     let postgres_factory = PersistenceFactoryEnum::Postgres {};
 
-    let json_app = EnumApp {
-        loader: json_factory.create_loader(),
-        storer: json_factory.create_storer(),
-    };
-
-    let postgres_app = EnumApp {
-        loader: postgres_factory.create_loader(),
-        storer: postgres_factory.create_storer(),
-    };
+    let json_app = EnumApp::from_enum_factory(&json_factory);
+    let postgres_app = EnumApp::from_enum_factory(&postgres_factory);
 
     println!("--- Running json app ---");
     json_app.store();

@@ -9,15 +9,9 @@ fn main() {
     let json_factory = JsonBoxedPersistenceFactory {};
     let postgres_factory = PostgresBoxedPersistenceFactory {};
 
-    let json_app = BoxedApp {
-        loader: json_factory.create_loader(),
-        storer: json_factory.create_storer(),
-    };
+    let json_app = BoxedApp::from_boxed_factory(&json_factory);
 
-    let postgres_app = BoxedApp {
-        loader: postgres_factory.create_loader(),
-        storer: postgres_factory.create_storer(),
-    };
+    let postgres_app = BoxedApp::from_boxed_factory(&postgres_factory);
 
     println!("--- Running json app ---");
     json_app.store();

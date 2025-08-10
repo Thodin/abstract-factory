@@ -1,6 +1,6 @@
 use abstract_factory::{
     abstract_factories::generic_factories::{
-        GenericPersistenceFactory, JsonGenericPersistenceFactory, PostgresGenericPersistenceFactory,
+        JsonGenericPersistenceFactory, PostgresGenericPersistenceFactory,
     },
     apps::generic_app::GenericApp,
 };
@@ -9,15 +9,9 @@ fn main() {
     let json_factory = JsonGenericPersistenceFactory {};
     let postgres_factory = PostgresGenericPersistenceFactory {};
 
-    let json_app = GenericApp {
-        loader: json_factory.create_loader(),
-        storer: json_factory.create_storer(),
-    };
+    let json_app = GenericApp::from_generic_factory(&json_factory);
 
-    let postgres_app = GenericApp {
-        loader: postgres_factory.create_loader(),
-        storer: postgres_factory.create_storer(),
-    };
+    let postgres_app = GenericApp::from_generic_factory(&postgres_factory);
 
     println!("--- Running json app ---");
     json_app.store();

@@ -11,15 +11,9 @@ fn main() {
     let json_factory = JsonAssociatedTypePersistenceFactory {};
     let postgres_factory = PostgresAssociatedTypePersistenceFactory {};
 
-    let json_app = GenericApp {
-        loader: json_factory.create_loader(),
-        storer: json_factory.create_storer(),
-    };
+    let json_app = GenericApp::from_associated_types_factory(&json_factory);
 
-    let postgres_app = GenericApp {
-        loader: postgres_factory.create_loader(),
-        storer: postgres_factory.create_storer(),
-    };
+    let postgres_app = GenericApp::from_associated_types_factory(&postgres_factory);
 
     println!("--- Running json app ---");
     json_app.store();

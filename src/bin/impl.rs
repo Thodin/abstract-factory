@@ -1,8 +1,8 @@
 use abstract_factory::{
     abstract_factories::impl_factories::{
-        ImplPersistenceFactory, JsonImplPersistenceFactory, PostgresImplPersistenceFactory,
+        JsonImplPersistenceFactory, PostgresImplPersistenceFactory,
     },
-    apps::generic_app::GenericApp,
+    apps::boxed_app::BoxedApp,
 };
 
 fn main() {
@@ -10,15 +10,9 @@ fn main() {
     let json_factory = JsonImplPersistenceFactory {};
     let postgres_factory = PostgresImplPersistenceFactory {};
 
-    let json_app = GenericApp {
-        loader: json_factory.create_loader(),
-        storer: json_factory.create_storer(),
-    };
+    let json_app = BoxedApp::from_impl_factory(&json_factory);
 
-    let postgres_app = GenericApp {
-        loader: postgres_factory.create_loader(),
-        storer: postgres_factory.create_storer(),
-    };
+    let postgres_app = BoxedApp::from_impl_factory(&postgres_factory);
 
     println!("--- Running json app ---");
     json_app.store();
