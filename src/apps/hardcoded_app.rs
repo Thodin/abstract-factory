@@ -1,8 +1,8 @@
 use crate::persistence::{JsonLoader, JsonStorer, Loader, Storer};
 
 pub struct HardcodedApp {
-    pub storer: JsonStorer,
-    pub loader: JsonLoader,
+    storer: JsonStorer,
+    loader: JsonLoader,
 }
 
 // Problem: Changing to a postgres storer/loader requires changing the app completely.

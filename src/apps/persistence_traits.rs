@@ -1,8 +1,8 @@
 use crate::persistence::{Loader, Storer};
 
 pub struct PersistenceTraitsApp<S: Storer, L: Loader> {
-    pub storer: S,
-    pub loader: L,
+    storer: S,
+    loader: L,
 }
 
 // Problem: There's no guarante that the storer and loader will be of the same family
