@@ -1,4 +1,4 @@
-use crate::persistence::{JsonLoader, JsonStorer, Loader, PostgresLoader, PostgresStorer, Storer};
+use crate::persistence::{JsonLoader, JsonStorer, Loader, SqlLoader, SqlStorer, Storer};
 
 pub trait BoxedPersistenceFactory {
     fn create_storer(&self) -> Box<dyn Storer>;
@@ -17,14 +17,14 @@ impl BoxedPersistenceFactory for JsonBoxedPersistenceFactory {
     }
 }
 
-pub struct PostgresBoxedPersistenceFactory {}
+pub struct SqlBoxedPersistenceFactory {}
 
-impl BoxedPersistenceFactory for PostgresBoxedPersistenceFactory {
+impl BoxedPersistenceFactory for SqlBoxedPersistenceFactory {
     fn create_storer(&self) -> Box<dyn Storer> {
-        Box::new(PostgresStorer {})
+        Box::new(SqlStorer {})
     }
 
     fn create_loader(&self) -> Box<dyn Loader> {
-        Box::new(PostgresLoader {})
+        Box::new(SqlLoader {})
     }
 }

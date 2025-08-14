@@ -1,4 +1,4 @@
-use crate::persistence::{JsonLoader, JsonStorer, Loader, PostgresLoader, PostgresStorer, Storer};
+use crate::persistence::{JsonLoader, JsonStorer, Loader, SqlLoader, SqlStorer, Storer};
 
 pub trait ImplPersistenceFactory<'a> {
     fn create_storer(&self) -> impl Storer + 'a;
@@ -17,14 +17,14 @@ impl<'a> ImplPersistenceFactory<'a> for JsonImplPersistenceFactory {
     }
 }
 
-pub struct PostgresImplPersistenceFactory {}
+pub struct SqlImplPersistenceFactory {}
 
-impl<'a> ImplPersistenceFactory<'a> for PostgresImplPersistenceFactory {
+impl<'a> ImplPersistenceFactory<'a> for SqlImplPersistenceFactory {
     fn create_storer(&self) -> impl Storer + 'a {
-        PostgresStorer {}
+        SqlStorer {}
     }
 
     fn create_loader(&self) -> impl Loader + 'a {
-        PostgresLoader {}
+        SqlLoader {}
     }
 }

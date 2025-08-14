@@ -5,8 +5,8 @@ pub struct HardcodedApp {
     loader: JsonLoader,
 }
 
-// Problem: Changing to a postgres storer/loader requires changing the app completely.
-// There is no guarantee that the postgres objects will satisfy the same `Loader`/`Storer`
+// Problem: Changing to a sql storer/loader requires changing the app completely.
+// There is no guarantee that the sql objects will satisfy the same `Loader`/`Storer`
 // traits, so the code in `store`/`load` might need to change as well.
 
 impl HardcodedApp {

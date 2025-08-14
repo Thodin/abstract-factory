@@ -1,8 +1,8 @@
-use crate::persistence::{JsonLoader, JsonStorer, PostgresLoader, PostgresStorer};
+use crate::persistence::{JsonLoader, JsonStorer, Loader, SqlLoader, SqlStorer, Storer};
 
 pub trait AssociatedTypePersistenceFactory {
-    type CreatedStorer;
-    type CreatedLoader;
+    type CreatedStorer: Storer;
+    type CreatedLoader: Loader;
 
     fn create_storer(&self) -> Self::CreatedStorer;
     fn create_loader(&self) -> Self::CreatedLoader;
@@ -23,17 +23,17 @@ impl AssociatedTypePersistenceFactory for JsonAssociatedTypePersistenceFactory {
     }
 }
 
-pub struct PostgresAssociatedTypePersistenceFactory {}
+pub struct SqlAssociatedTypePersistenceFactory {}
 
-impl AssociatedTypePersistenceFactory for PostgresAssociatedTypePersistenceFactory {
-    type CreatedStorer = PostgresStorer;
-    type CreatedLoader = PostgresLoader;
+impl AssociatedTypePersistenceFactory for SqlAssociatedTypePersistenceFactory {
+    type CreatedStorer = SqlStorer;
+    type CreatedLoader = SqlLoader;
 
     fn create_storer(&self) -> Self::CreatedStorer {
-        PostgresStorer {}
+        SqlStorer {}
     }
 
     fn create_loader(&self) -> Self::CreatedLoader {
-        PostgresLoader {}
+        SqlLoader {}
     }
 }

@@ -5,27 +5,24 @@ use abstract_factory::{
 
 fn main() {
     let json_factory = PersistenceFactoryEnum::Json {};
-    let postgres_factory = PersistenceFactoryEnum::Postgres {};
+    let sql_factory = PersistenceFactoryEnum::Sql {};
 
     let json_app = EnumApp::from_enum_factory(&json_factory);
-    let postgres_app = EnumApp::from_enum_factory(&postgres_factory);
+    let sql_app = EnumApp::from_enum_factory(&sql_factory);
 
     println!("--- Running json app ---");
     json_app.store();
     json_app.load();
     println!("");
 
-    println!("--- Running postgres app ---");
-    postgres_app.store();
-    postgres_app.load();
+    println!("--- Running sql app ---");
+    sql_app.store();
+    sql_app.load();
     println!("");
 
     // Can easily store storers in the same collection as they are variants of the same enum.
-    let _storers: Vec<StorerEnum> = vec![
-        json_factory.create_storer(),
-        postgres_factory.create_storer(),
-    ];
+    let _storers: Vec<StorerEnum> = vec![json_factory.create_storer(), sql_factory.create_storer()];
 
     // Same for the factories
-    let _factories: Vec<PersistenceFactoryEnum> = vec![json_factory, postgres_factory];
+    let _factories: Vec<PersistenceFactoryEnum> = vec![json_factory, sql_factory];
 }

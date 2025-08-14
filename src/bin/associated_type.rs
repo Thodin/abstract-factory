@@ -1,7 +1,7 @@
 use abstract_factory::{
     abstract_factories::associated_type_factories::{
         AssociatedTypePersistenceFactory, JsonAssociatedTypePersistenceFactory,
-        PostgresAssociatedTypePersistenceFactory,
+        SqlAssociatedTypePersistenceFactory,
     },
     apps::generic_app::GenericApp,
     persistence::Storer,
@@ -9,20 +9,20 @@ use abstract_factory::{
 
 fn main() {
     let json_factory = JsonAssociatedTypePersistenceFactory {};
-    let postgres_factory = PostgresAssociatedTypePersistenceFactory {};
+    let sql_factory = SqlAssociatedTypePersistenceFactory {};
 
     let json_app = GenericApp::from_associated_types_factory(&json_factory);
 
-    let postgres_app = GenericApp::from_associated_types_factory(&postgres_factory);
+    let sql_app = GenericApp::from_associated_types_factory(&sql_factory);
 
     println!("--- Running json app ---");
     json_app.store();
     json_app.load();
     println!("");
 
-    println!("--- Running postgres app ---");
-    postgres_app.store();
-    postgres_app.load();
+    println!("--- Running sql app ---");
+    sql_app.store();
+    sql_app.load();
     println!("");
 
     // Play around a bit.
@@ -30,7 +30,7 @@ fn main() {
     // If we want multiple storers in the same collection, we still need to box (obviously!).
     let _storers: Vec<Box<dyn Storer>> = vec![
         Box::new(json_factory.create_storer()),
-        Box::new(postgres_factory.create_storer()),
+        Box::new(sql_factory.create_storer()),
     ];
 
     // Can't get both factories into the same collection, as we would need to specify
@@ -42,5 +42,5 @@ fn main() {
     //                 CreatedStorer = JsonStorer,
     //             >,
     //     >,
-    // > = vec![Box::new(json_factory), Box::new(postgres_factory)];
+    // > = vec![Box::new(json_factory), Box::new(sql_factory)];
 }

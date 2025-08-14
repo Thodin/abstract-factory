@@ -14,11 +14,11 @@ impl Storer for JsonStorer {
     }
 }
 
-pub struct PostgresStorer {}
+pub struct SqlStorer {}
 
-impl Storer for PostgresStorer {
+impl Storer for SqlStorer {
     fn store(&self) {
-        println!("Storing in Postgres db ...");
+        println!("Storing in SQL db ...");
     }
 }
 
@@ -30,10 +30,10 @@ impl Loader for JsonLoader {
     }
 }
 
-pub struct PostgresLoader {}
+pub struct SqlLoader {}
 
-impl Loader for PostgresLoader {
+impl Loader for SqlLoader {
     fn load(&self) {
-        println!("Loading from Postgres db ...");
+        println!("Loading from SQL db ...");
     }
 }
